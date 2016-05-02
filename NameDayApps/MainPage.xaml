@@ -1,0 +1,46 @@
+﻿<Page
+    x:Class="NameDayApps.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:NameDayApps"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" RequestedTheme="Dark">
+    <Page.DataContext>
+        <local:MainPageData/>
+    </Page.DataContext>
+    <Page.Resources>
+        <DataTemplate x:Key="NameDayModelTemplate">
+            <StackPanel Orientation="Horizontal" > 
+                <TextBlock Text="{Binding Month, Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" />
+                <TextBlock Text="{Binding Day, Mode=OneTime}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" />
+                <ItemsControl ItemsSource="{Binding Names, Mode=OneWay}" />
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+    <!--change the theme to dark-->
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="320" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBox x:Name="textBox" Margin="10" TextWrapping="Wrap" Text="{Binding Filter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:LayoutOverrides ="Width, Height" PlaceholderText="Search for names" />
+            <ListView x:Name="listView" ItemTemplate="{StaticResource NameDayModelTemplate}" ItemsSource="{Binding Namedays}" Grid.Row="1" SelectedItem="{Binding SelectedNameday, Mode=TwoWay}" />
+            
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Greeting}" d:LayoutOverrides="Height"/>
+            <Ellipse Fill="#FFF4F4F5" Grid.Row="1" Stroke="Black" />
+        </Grid>
+    </Grid>
+</Page>
