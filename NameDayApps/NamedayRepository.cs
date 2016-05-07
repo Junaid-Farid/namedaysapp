@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -18,11 +19,14 @@ namespace NameDayApps
                 return allNamedaysCache;
 
             var client = new HttpClient(); 
-            var stream = await client.GetStreamAsync(
-                "http://response.hu/namedays_hu.json");
+            var stream = await client.GetStringAsync(
+                "http://www.response.hu/namedays_hu.json");
 
-            var serializer = new DataContractJsonSerializer(typeof(List<NameDayModel>));
-            allNamedaysCache = (List<NameDayModel>)serializer.ReadObject(stream);
+            allNamedaysCache = JsonConvert.DeserializeObject<List<NameDayModel>>(stream);
+
+//            allNamedaysCache = JsonConvert.
+            //var serializer = new DataContractJsonSerializer(typeof(List<NameDayModel>));
+            //allNamedaysCache = (List<NameDayModel>)serializer.ReadObject(stream);
 
             return allNamedaysCache;
         }

@@ -53,14 +53,15 @@ namespace NameDayApps
                 PerformFiltering(); //here the filter is still empty so the PerformFiltering method should copy every items in the _allNamedays List
 
             }
-
-
-            //we have created the below method to load the Async data from the server
-            LoadData(); 
+            else
+            {
+                //we have created the below method to load the Async data from the server
+                LoadData();
+            }
         }
         public async void LoadData()
         {
-            //get all the data then perform the filting 
+            //get all the data then perform the filtring 
             _allNamedays = await NamedayRepository.GetAllNamedaysAsync();
 
             //perform the filtering in the structor it will load the all data first time
