@@ -26,5 +26,17 @@ namespace NameDayApps
         {
             this.InitializeComponent();
         }
+        private async void btnEmail_Click(object sender, RoutedEventArgs e)
+        {
+            var contact = ((FrameworkElement)sender).DataContext as ContactInfoClass;
+
+            if (contact != null)
+                await ((MainPageData)this.DataContext).SendEmailAsync(contact.Contact);
+        }
+
+        private void appBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(AboutPage));
+        }
     }
 }

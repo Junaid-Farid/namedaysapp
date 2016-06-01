@@ -6,18 +6,44 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" RequestedTheme="Dark">
-    <Page.DataContext>
+    <Page.DataContext> 
         <local:MainPageData/>
     </Page.DataContext>
     <Page.Resources>
         <DataTemplate x:Key="NameDayModelTemplate">
-            <StackPanel Orientation="Horizontal" > 
+            <StackPanel Orientation="Horizontal" >
                 <TextBlock Text="{Binding Month, Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" />
                 <TextBlock Text="{Binding Day, Mode=OneTime}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" />
                 <ItemsControl ItemsSource="{Binding Names, Mode=OneWay}" />
             </StackPanel>
         </DataTemplate>
+        <DataTemplate x:Key="ContactListTemplate">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Ellipse Fill="{ThemeResource SystemControlBackgroundAccentBrush}" Height="100" VerticalAlignment="Top" Width="100"/>
+                <TextBlock Text="{Binding Initials, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="32"/>
+                <Ellipse Fill="{Binding Picture, Mode=OneWay}" Height="100" VerticalAlignment="Top" Width="100"/>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="20,0,0,0">
+                    <TextBlock Text="{Binding Contact.FullName, Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Button x:Name="button" Content="Email" Click="btnEmail_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding Contact.Emails}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
     </Page.Resources>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.SecondaryCommands>
+                <AppBarToggleButton x:Name="appBarToggleButton" Label="Enable Reminder" IsChecked="{Binding Settings.NotificationsEnabled, Mode=TwoWay}"/>
+                <AppBarToggleButton x:Name="appBarToggleButton1" Label="Enable Live Tile" IsChecked="{Binding Settings.UpdatingLiveTileEnabled, Mode=TwoWay}"/>
+                <AppBarSeparator/>
+                <AppBarButton x:Name="appBarButton" Label="About" Click="appBarButton_Click"/>
+            </CommandBar.SecondaryCommands>
+            <AppBarButton Icon="Calendar" Label="Create Reminder" ToolTipService.ToolTip="Create Reminder" Command="{Binding AddReminderCommand, Mode=OneWay}"/>
+        </CommandBar>
+    </Page.BottomAppBar>
     <!--change the theme to dark-->
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -32,7 +58,7 @@
             </Grid.RowDefinitions>
             <TextBox x:Name="textBox" Margin="10" TextWrapping="Wrap" Text="{Binding Filter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:LayoutOverrides ="Width, Height" PlaceholderText="Search for names" />
             <ListView x:Name="listView" ItemTemplate="{StaticResource NameDayModelTemplate}" ItemsSource="{Binding Namedays}" Grid.Row="1" SelectedItem="{Binding SelectedNameday, Mode=TwoWay}" />
-            
+
         </Grid>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
@@ -40,7 +66,9 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Greeting}" d:LayoutOverrides="Height"/>
-            <Ellipse Fill="#FFF4F4F5" Grid.Row="1" Stroke="Black" />
+            <ScrollViewer Grid.Row="1">
+                <ItemsControl ItemsSource="{Binding Contacts}" ItemTemplate="{StaticResource ContactListTemplate}"/>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Page>
