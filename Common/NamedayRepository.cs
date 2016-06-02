@@ -32,5 +32,13 @@ namespace Common
 
             return allNamedaysCache;
         }
+        public static async Task<string> GetTodaysNamesAsStringAsync()
+        {
+            var allNamedays = await GetAllNamedaysAsync();
+            var todaysNamedays = allNamedays.Find(
+                d => d.Day == DateTime.Now.Day && d.Month == DateTime.Now.Month);
+
+            return todaysNamedays?.NamesAsString;
+        }
     }
 } 
